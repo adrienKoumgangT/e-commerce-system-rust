@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SqlDialectMappings">
+    <file url="file://$PROJECT_DIR$/migrations/user/routines/user-auth/app_user_auth_delete.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/migrations/user/routines/user-auth/app_user_auth_get.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/migrations/user/routines/user-auth/app_user_auth_get_all.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/migrations/user/routines/user-auth/app_user_auth_get_by_id.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/migrations/user/routines/user-auth/app_user_auth_get_by_name.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/migrations/user/routines/user-auth/app_user_auth_insert.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/migrations/user/routines/user-auth/app_user_auth_update.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/migrations/user/routines/user-status/app_user_status_delete.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/migrations/user/routines/user-status/app_user_status_get.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/migrations/user/routines/user-status/app_user_status_get_all.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/migrations/user/routines/user-status/app_user_status_get_by_id.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/migrations/user/routines/user-status/app_user_status_get_by_name.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/migrations/user/routines/user-status/app_user_status_insert.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/migrations/user/routines/user-status/app_user_status_update.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/migrations/user/routines/user/app_user_delete.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/migrations/user/routines/user/app_user_get.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/migrations/user/routines/user/app_user_get_all.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/migrations/user/routines/user/app_user_get_by_auth.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/migrations/user/routines/user/app_user_get_by_country.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/migrations/user/routines/user/app_user_get_by_country_and_or_title.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/migrations/user/routines/user/app_user_get_by_status.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/migrations/user/routines/user/app_user_get_by_title.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/migrations/user/routines/user/app_user_get_by_username.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/migrations/user/routines/user/app_user_insert.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/migrations/user/routines/user/app_user_search_by_country.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/migrations/user/routines/user/app_user_search_by_title.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/migrations/user/routines/user/app_user_search_by_username.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/migrations/user/routines/user/app_user_update.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/migrations/user/routines/user/app_user_update_password.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/migrations/user/routines/user/app_user_update_profile_pic_url.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/migrations/user/routines/user/app_user_update_status.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/migrations/user/tables/user.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/migrations/user/tables/user_auth.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/migrations/user/tables/user_status.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/migrations/user/views/user_view.sql" dialect="MySQL" />
+  </component>
+</project>
