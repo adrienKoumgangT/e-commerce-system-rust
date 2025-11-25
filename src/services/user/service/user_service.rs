@@ -1,5 +1,7 @@
 use anyhow::{Error, Result};
 use async_trait::async_trait;
+use bb8::Pool;
+use bb8_redis::RedisConnectionManager;
 use crate::services::user::command::user_command::{
     UserCreateCommand, 
     UserDeleteCommand, 
@@ -15,6 +17,7 @@ use crate::services::user::command::user_command::{
 use crate::services::user::dto::user_dto::UserResponse;
 use crate::services::user::model::user_model::User;
 use crate::services::user::repository::user_repo::{UserRepository, UserRepositoryInterface};
+use crate::shared::database::redis::{delete_key, get_key, set_key};
 use crate::shared::state::AppState;
 
 #[async_trait]
@@ -48,22 +51,50 @@ pub trait UserServiceInterface {
 #[derive(Clone)]
 pub struct UserService {
     user_repo: UserRepository,
+    redis_pool: Option<Pool<RedisConnectionManager>>,
 }
 
 impl UserService {
-    pub fn new(user_repo: UserRepository) -> Self {
-        Self { user_repo }
+    pub fn new(user_repo: UserRepository, redis_pool: Option<Pool<RedisConnectionManager>>) -> Self {
+        Self { 
+            user_repo, 
+            redis_pool 
+        }
     }
     
     pub fn from_app_state(app_state: &AppState) -> Self {
         let user_repo = UserRepository::new(app_state.mysql_pool.clone());
-        Self::new(user_repo)
+        Self::new(user_repo, Option::from(app_state.redis_pool.clone()))
+    }
+
+    pub fn redis_key_single_ttl(&self) -> Option<u64> {
+        Some(60*60)
+    }
+
+    pub fn form_redis_key_single(&self, key: &i64) -> String {
+        format!("user:{}", key)
+    }
+
+    pub fn redis_key_list_count_ttl(&self) -> Option<u64> {
+        Some(60*10)
+    }
+
+    pub fn form_redis_key_list_count(&self) -> String {
+        "user:list:count".to_string()
     }
 }
 
 #[async_trait]
 impl UserServiceInterface for UserService {
     async fn get(&self, user_get_command: UserGetCommand) -> Result<Option<UserResponse>, Error> {
+        if let Some(redis_pool) = &self.redis_pool {
+            let key = self.form_redis_key_single(&user_get_command.id);
+            let user_cache: Option<UserResponse> = get_key(&redis_pool, key.as_str()).await?;
+            if let Some(user_cache) = user_cache {
+                return Ok(Some(user_cache));
+            }
+        }
+        
         let user = self.user_repo.get_user(user_get_command.id).await;
         match user {
             Ok(user) => match user {
@@ -90,7 +121,14 @@ impl UserServiceInterface for UserService {
         );
         let user = self.user_repo.create_user(user_create).await;
         match user {
-            Ok(user) => Ok(UserResponse::from(user)),
+            Ok(user) => {
+                let user_response = UserResponse::from(user);
+                if let Some(redis_pool) = &self.redis_pool {
+                    let key = self.form_redis_key_single(&user_response.id);
+                    let _: () = set_key(&redis_pool, key.as_str(), &user_response, self.redis_key_single_ttl()).await?;
+                }
+                Ok(user_response)
+            },
             Err(_) => Err(Error::msg("Error during create user.")),
         }
     }
@@ -112,7 +150,14 @@ impl UserServiceInterface for UserService {
         let user = self.user_repo.update_user(user_update_command.id, user_update).await;
         match user {
             Ok(user) => match user {
-                Some(user) => Ok(Some(UserResponse::from(user))),
+                Some(user) => {
+                    let user_response = UserResponse::from(user);
+                    if let Some(redis_pool) = &self.redis_pool {
+                        let key = self.form_redis_key_single(&user_response.id);
+                        let _: () = set_key(&redis_pool, key.as_str(), &user_response, self.redis_key_single_ttl()).await?;   
+                    }
+                    Ok(Some(user_response))
+                },
                 None => Err(Error::msg("User not found")),
             },
             Err(_) => Err(Error::msg("Error during update user.")),
@@ -128,7 +173,14 @@ impl UserServiceInterface for UserService {
                     let user = self.user_repo.update_user_password(user.id.unwrap(), user_update_password_command.password).await;
                     match user {
                         Ok(user) => match user {
-                            Some(user) => Ok(Some(UserResponse::from(user))),
+                            Some(user) => {
+                                let user_response = UserResponse::from(user);
+                                if let Some(redis_pool) = &self.redis_pool {
+                                    let key = self.form_redis_key_single(&user_response.id);
+                                    let _: () = set_key(&redis_pool, key.as_str(), &user_response, self.redis_key_single_ttl()).await?;
+                                }
+                                Ok(Some(user_response))
+                            },
                             None => Err(Error::msg("User not found")),
                         },
                         Err(_) => Err(Error::msg("Error during update user password.")),
@@ -145,7 +197,14 @@ impl UserServiceInterface for UserService {
         
         match user {
             Ok(user) => match user {
-                Some(user) => Ok(Some(UserResponse::from(user))),
+                Some(user) => {
+                    let user_response = UserResponse::from(user);
+                    if let Some(redis_pool) = &self.redis_pool {
+                        let key = self.form_redis_key_single(&user_response.id);
+                        let _: () = set_key(&redis_pool, key.as_str(), &user_response, self.redis_key_single_ttl()).await?;
+                    }
+                    Ok(Some(user_response))
+                },
                 None => Err(Error::msg("User not found")),
             },
             Err(_) => Err(Error::msg("Error during update user profile pic url.")),
@@ -156,7 +215,14 @@ impl UserServiceInterface for UserService {
         let user = self.user_repo.update_user_status(user_id, status).await;
         match user {
             Ok(user) => match user {
-                Some(user) => Ok(Some(UserResponse::from(user))),
+                Some(user) => {
+                    let user_response = UserResponse::from(user);
+                    if let Some(redis_pool) = &self.redis_pool {
+                        let key = self.form_redis_key_single(&user_response.id);
+                        let _: () = set_key(&redis_pool, key.as_str(), &user_response, self.redis_key_single_ttl()).await?;
+                    }
+                    Ok(Some(user_response))
+                },
                 None => Err(Error::msg("User not found")),
             },
             Err(_) => Err(Error::msg("Error during update user status.")),       
@@ -165,6 +231,10 @@ impl UserServiceInterface for UserService {
 
     async fn delete(&self, user_delete_command: UserDeleteCommand) -> Result<(), Error> {
         let result = self.user_repo.delete_user(user_delete_command.id).await;
+        if let Some(redis_pool) = &self.redis_pool {
+            let key = self.form_redis_key_single(&user_delete_command.id);
+            let _: () = delete_key(&redis_pool, key.as_str()).await?;
+        }
         match result {
             Ok(_) => Ok(()),
             Err(_) => Err(Error::msg("Error during delete user.")),       

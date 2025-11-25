@@ -4,6 +4,7 @@ use bb8_redis::RedisConnectionManager;
 use redis::{AsyncCommands, RedisError};
 use tracing::info;
 use crate::shared::configuration::AppDatabaseRedisConfig;
+use crate::shared::logging::log::TimePrinter;
 
 pub type RedisDatabase = Pool<RedisConnectionManager>;
 
@@ -27,6 +28,11 @@ pub async fn set_key<T: serde::Serialize>(
     value: &T,
     ttl_seconds: Option<u64>,
 ) -> Result<()> {
+    let timer = TimePrinter::with_message(&format!(
+        "[REDIS] [SET] Key: {} ",
+        key.to_string()
+    ));
+
     let mut conn = pool.get().await?;
     let serialized = serde_json::to_string(value)?;
 
@@ -36,6 +42,8 @@ pub async fn set_key<T: serde::Serialize>(
         let _: () = conn.set(key, serialized).await?;
     }
 
+    timer.log();
+
     Ok(())
 }
 
@@ -43,20 +51,36 @@ pub async fn get_key<T: serde::de::DeserializeOwned>(
     pool: &RedisDatabase,
     key: &str,
 ) -> Result<Option<T>> {
+    let timer = TimePrinter::with_message(&format!(
+        "[REDIS] [GET] Key: {} ",
+        key.to_string()
+    ));
+
     let mut conn = pool.get().await?;
     let result: Option<String> = conn.get(key).await?;
 
     match result {
         Some(data) => {
-            let deserialized: T = serde_json::from_str(&data)?;
+            let deserialized = serde_json::from_str(&data)?;
+            timer.log();
             Ok(Some(deserialized))
         }
-        None => Ok(None),
+        None => {
+            timer.warning();
+            Ok(None)
+        },
     }
 }
 
 pub async fn delete_key(pool: &RedisDatabase, key: &str) -> Result<()> {
+    let timer = TimePrinter::with_message(&format!(
+        "[REDIS] [DELETE] Key: {} ",
+        key.to_string()
+    ));
+
     let mut conn = pool.get().await?;
     let _: () = conn.del(key).await?;
+
+    timer.log();
     Ok(())
 }

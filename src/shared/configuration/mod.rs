@@ -39,6 +39,7 @@ pub struct AppDatabaseRedisConfig {
     pub uri: String,
     pub default_ttl: Option<u64>, // in seconds
     pub max_connections: Option<u32>,
+    pub app_space_name: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -147,10 +148,12 @@ impl AppConfig {
                     .map(|ttl| ttl.trim().parse::<u64>().unwrap());
                 let redis_max_connections = get_env("REDIS_MAX_CONNECTIONS").ok()
                     .map(|ttl| ttl.trim().parse::<u32>().unwrap());
+                let redis_app_space_name = get_env("REDIS_APP_SPACE_NAME").ok();
                 Some(AppDatabaseRedisConfig {
                     uri: url,
                     default_ttl: redis_default_ttl,
                     max_connections: redis_max_connections,
+                    app_space_name: redis_app_space_name
                 })
             },
             None => None,
@@ -195,7 +198,7 @@ impl AppConfig {
 
 
 /// Helper to read an environment variable and return an error if it's not set.
-fn get_env(key: &str) -> anyhow::Result<String> {
+fn get_env(key: &str) -> Result<String> {
     std::env::var(key).map_err(|_| anyhow::anyhow!("Missing required environment variable: {}", key))
 }
 

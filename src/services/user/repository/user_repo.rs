@@ -4,6 +4,7 @@ use sqlx::MySqlPool;
 
 use crate::services::user::model::user_model::User;
 use crate::shared::database::mysql::{GenericRepository, MySqlParam};
+// use crate::shared::models::utils_model::CountModel;
 use crate::shared::repository::crud_repository::CrudRepository;
 
 #[async_trait]
@@ -23,6 +24,8 @@ pub trait UserRepositoryInterface {
     async fn delete_user(&self, user_id: i64) -> Result<User, Error>;
 
     async fn get_all_users(&self, limit: Option<u32>, offset: Option<u32>) -> Result<Vec<User>, Error>;
+
+    // async fn get_all_users_count(&self) -> Result<u32, Error>;
 
     async fn get_user_by_username(&self, username: String) -> Result<Option<User>, Error>;
 
@@ -192,6 +195,14 @@ impl UserRepositoryInterface for UserRepository {
 
         self.call_procedure_for_list("app_user_get_all", params).await
     }
+
+    /*async fn get_all_users_count(&self) -> Result<u32, Error> {
+        let params = vec![
+            MySqlParam::from(None::<i64>),
+        ];
+
+        self.call_procedure_for_optional("app_user_get_all_count", params).await
+    }*/
 
     async fn get_user_by_username(&self, username: String) -> Result<Option<User>, Error> {
         let params = vec![

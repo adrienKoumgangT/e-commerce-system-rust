@@ -2,6 +2,7 @@
 <project version="4">
   <component name="DataSourcePerFileMappings">
     <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/78bdfbb3-94f2-44af-913e-2ea181eee3d7/console.sql" value="78bdfbb3-94f2-44af-913e-2ea181eee3d7" />
+    <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/78bdfbb3-94f2-44af-913e-2ea181eee3d7/console_1.sql" value="78bdfbb3-94f2-44af-913e-2ea181eee3d7" />
     <file url="file://$PROJECT_DIR$/migrations/user/routines/user-auth/app_user_auth_delete.sql" value="78bdfbb3-94f2-44af-913e-2ea181eee3d7" />
     <file url="file://$PROJECT_DIR$/migrations/user/routines/user-auth/app_user_auth_get.sql" value="78bdfbb3-94f2-44af-913e-2ea181eee3d7" />
     <file url="file://$PROJECT_DIR$/migrations/user/routines/user-auth/app_user_auth_get_all.sql" value="78bdfbb3-94f2-44af-913e-2ea181eee3d7" />
@@ -19,6 +20,7 @@
     <file url="file://$PROJECT_DIR$/migrations/user/routines/user/app_user_delete.sql" value="78bdfbb3-94f2-44af-913e-2ea181eee3d7" />
     <file url="file://$PROJECT_DIR$/migrations/user/routines/user/app_user_get.sql" value="78bdfbb3-94f2-44af-913e-2ea181eee3d7" />
     <file url="file://$PROJECT_DIR$/migrations/user/routines/user/app_user_get_all.sql" value="78bdfbb3-94f2-44af-913e-2ea181eee3d7" />
+    <file url="file://$PROJECT_DIR$/migrations/user/routines/user/app_user_get_all_count.sql" value="78bdfbb3-94f2-44af-913e-2ea181eee3d7" />
     <file url="file://$PROJECT_DIR$/migrations/user/routines/user/app_user_get_by_auth.sql" value="78bdfbb3-94f2-44af-913e-2ea181eee3d7" />
     <file url="file://$PROJECT_DIR$/migrations/user/routines/user/app_user_get_by_country.sql" value="78bdfbb3-94f2-44af-913e-2ea181eee3d7" />
     <file url="file://$PROJECT_DIR$/migrations/user/routines/user/app_user_get_by_country_and_or_title.sql" value="78bdfbb3-94f2-44af-913e-2ea181eee3d7" />

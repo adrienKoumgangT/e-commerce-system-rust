@@ -38,8 +38,14 @@ where
             .map_err(|e| Error::msg(e.to_string()));
 
         match entity_row_result {
-            Ok(_) => Ok(()),
-            Err(e) => Err(Error::msg(e.to_string()))
+            Ok(_) => {
+                timer.log();
+                Ok(())
+            },
+            Err(e) => {
+                timer.error_with_message(format!("Failed to execute procedure: {}", e).as_str());
+                Err(Error::msg(e.to_string()))
+            }
         }
     }
     

@@ -2,11 +2,9 @@ use std::collections::HashMap;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use sqlx::{mysql::MySqlRow, Row, Error as SqlxError};
-use utoipa::ToSchema;
 use crate::shared::database::mysql::FromSqlRow;
 
-#[derive(Debug, Serialize, Deserialize, sqlx::FromRow)]
-#[derive(Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize, sqlx::FromRow)]
 pub struct UserAuth {
     pub id: Option<i64>,
     pub name: String,
@@ -34,7 +32,7 @@ impl FromSqlRow for UserAuth {
 }
 
 
-#[derive(Debug, Serialize, Deserialize, sqlx::FromRow)]
+#[derive(Debug, Clone, Serialize, Deserialize, sqlx::FromRow)]
 pub struct UserStatus {
     pub id: Option<i64>,
     pub name: String,

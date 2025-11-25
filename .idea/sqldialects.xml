@@ -18,6 +18,7 @@
     <file url="file://$PROJECT_DIR$/migrations/user/routines/user/app_user_delete.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/migrations/user/routines/user/app_user_get.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/migrations/user/routines/user/app_user_get_all.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/migrations/user/routines/user/app_user_get_all_count.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/migrations/user/routines/user/app_user_get_by_auth.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/migrations/user/routines/user/app_user_get_by_country.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/migrations/user/routines/user/app_user_get_by_country_and_or_title.sql" dialect="MySQL" />
